@@ -1,3 +1,4 @@
+import FormPage from './form/page';
 import './globals.css';
 
 export default function RootLayout({
@@ -5,5 +6,11 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  return <html></html>;
+  return (
+    <html>
+      <body>
+        <FormPage />
+      </body>
+    </html>
+  );
 }
