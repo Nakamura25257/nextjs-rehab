@@ -1,4 +1,3 @@
-import FormPage from './form/page';
 import './globals.css';
 
 export default function RootLayout({
@@ -8,9 +7,7 @@ export default function RootLayout({
 }>) {
   return (
     <html>
-      <body>
-        <FormPage />
-      </body>
+      <body></body>
     </html>
   );
 }
