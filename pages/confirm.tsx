@@ -1,5 +1,9 @@
-import {useRouter} from 'next/router';
+'use client';
+
+import {NextRouter, useRouter} from 'next/router';
 import '../app/styles/form.css';
+import {PostData} from '@/types/contact/contact';
+import {FormEvent, useEffect} from 'react';
 
 type QueryParams = {
   username: string;
@@ -8,17 +12,41 @@ type QueryParams = {
 };
 
 export default function ConfirmContactPage() {
-  // const
-  const router = useRouter();
-  const query = router.query;
+  const router: NextRouter = useRouter();
+  const username =
+    typeof router.query.username === 'string' ? router.query.username : '';
+  const email =
+    typeof router.query.email === 'string' ? router.query.email : '';
+  const content =
+    typeof router.query.content === 'string' ? router.query.content : '';
 
-  const username = typeof query.username === 'string' && query.username;
-  const email = typeof query.email === 'string' && query.email;
-  const content = typeof query.content === 'string' && query.content;
+  useEffect(() => {
+    const redirectFunc = async (): Promise<void> => {
+      await router.push('/contact');
+    };
 
-  const handleSubmit = () => {
-    console.log('hoge');
-    // ここで特定のメールアドレスに飛ばす
+    if (!username || !email || !content) {
+      redirectFunc().catch((error: unknown) => {
+        console.error(error);
+      });
+    }
+  }, []);
+
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault();
+
+    const postData: PostData = {
+      username: username,
+      email: email,
+      content: 'content',
+    };
+
+    const res = await fetch('api/send', {
+      method: 'POST',
+      headers: {},
+      body: JSON.stringify(postData),
+    }).then(res => res.json());
+    console.log('res', res);
   };
 
   return (
