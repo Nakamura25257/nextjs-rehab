@@ -29,30 +29,12 @@ export default function FormPage() {
     <div className="container">
       <h1 className="title">お問い合わせ</h1>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <input
-          type="text"
-          placeholder="名前"
-          className="input"
-          {...register('username')}
-        />
-        {errors.username && (
-          <p className="errorMessage">{errors.username.message}</p>
-        )}
-        <input
-          type="email"
-          placeholder="メールアドレス"
-          className="input"
-          {...register('email')}
-        />
+        <input type="text" placeholder="名前" className="input" {...register('username')} />
+        {errors.username && <p className="errorMessage">{errors.username.message}</p>}
+        <input type="text" placeholder="メールアドレス" className="input" {...register('email')} />
         {errors.email && <p className="errorMessage">{errors.email.message}</p>}
-        <textarea
-          placeholder="内容"
-          className="textarea"
-          {...register('content')}
-        />
-        {errors.content && (
-          <p className="errorMessage">{errors.content.message}</p>
-        )}
+        <textarea placeholder="内容" className="textarea" {...register('content')} />
+        {errors.content && <p className="errorMessage">{errors.content.message}</p>}
         <button type="submit" className="button">
           確認画面へ
         </button>

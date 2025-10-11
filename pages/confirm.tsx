@@ -12,13 +12,11 @@ type QueryParams = {
 };
 
 export default function ConfirmContactPage() {
+  // TODO: そのうちReduxで状態管理
   const router: NextRouter = useRouter();
-  const username =
-    typeof router.query.username === 'string' ? router.query.username : '';
-  const email =
-    typeof router.query.email === 'string' ? router.query.email : '';
-  const content =
-    typeof router.query.content === 'string' ? router.query.content : '';
+  const username = typeof router.query.username === 'string' ? router.query.username : '';
+  const email = typeof router.query.email === 'string' ? router.query.email : '';
+  const content = typeof router.query.content === 'string' ? router.query.content : '';
 
   useEffect(() => {
     const redirectFunc = async (): Promise<void> => {

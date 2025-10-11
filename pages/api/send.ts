@@ -1,15 +1,12 @@
 import {NextApiRequest, NextApiResponse} from 'next';
 
 /**
- * nodemailerで特定のメールアドレスへ送信するAPI
+ * TOFO：nodemailerで特定のメールアドレスへ送信するAPI
  */
 type ResponseData = {message: string};
 
-export default function handler(
-  req: NextApiRequest,
-  res: NextApiResponse<ResponseData>,
-) {
-  const {username, email, content} = req.body;
+export default function handler(req: NextApiRequest, res: NextApiResponse<ResponseData>) {
+  const {username, email} = req.body;
 
   if (!username) {
     // usernameが空の場合
