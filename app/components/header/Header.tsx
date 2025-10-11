@@ -5,7 +5,7 @@ export default function Header() {
   return (
     <header className={styles.header}>
       <Link href="/" className={styles.logo}>
-        MySite
+        Pokemon Illustrated book
       </Link>
       <nav className={styles.nav}>
         <a href="#features">Features</a>
