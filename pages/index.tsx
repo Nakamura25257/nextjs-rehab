@@ -2,23 +2,23 @@
 
 import {ChangeEvent, useState} from 'react';
 import styles from './style.module.css';
-import {PokemonType} from '@/types/pokemon';
+import {PokemonLists} from '@/types/pokemon';
 
-const POKEMON_URL = process.env.NEXT_PUBLIC_POKE_API_URL;
+const POKEMON_URL: string | undefined = process.env.NEXT_PUBLIC_POKE_API_URL;
 
-export default function IndexPage(pokemonData: PokemonType) {
-  console.log(pokemonData);
+export default function IndexPage(pokemonData: PokemonLists) {
   const [isDisabledBtn, setIsDisabledBtn] = useState<boolean>(true);
-  const [pokemonUrl, setPokemonUrl] = useState<string>('');
+  const [searchPokemon, setsearchPokemon] = useState<string>('');
 
   const handleChangeInput = (e: ChangeEvent<HTMLInputElement>): void => {
     const value: string = e.target.value;
-    setPokemonUrl(POKEMON_URL + value);
+    setsearchPokemon(POKEMON_URL + value);
     value.length > 0 ? setIsDisabledBtn(false) : setIsDisabledBtn(true);
   };
 
   const handleSearch = (): void => {
     // pokemonURLでfetch
+    console.log(searchPokemon);
   };
 
   return (
@@ -35,7 +35,16 @@ export default function IndexPage(pokemonData: PokemonType) {
           検索
         </button>
       </div>
-      <div className={styles.mainWrapper}></div>
+      <div className={styles.container}>
+        {pokemonData.data.results.map(pokemon => (
+          <div key={pokemon.name} className={styles.card}>
+            <p className={styles.name}>{pokemon.name}</p>
+            <a href={pokemon.url} target="_blank" rel="noopener noreferrer" className={styles.link}>
+              詳細を見る
+            </a>
+          </div>
+        ))}
+      </div>
     </>
   );
 }
@@ -44,8 +53,8 @@ export default function IndexPage(pokemonData: PokemonType) {
  * 初期値としてデータ一覧を表示したい
  */
 export async function getStaticProps() {
-  const res: Response = await fetch(POKEMON_URL + 'pikachu');
-  const data: PokemonType = await res.json();
+  const res: Response = await fetch(POKEMON_URL + '?limit=100&offset=0');
+  const data: PokemonLists = await res.json();
   return {
     props: {
       data,

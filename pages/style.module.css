@@ -53,3 +53,42 @@
 .searchBtn:disabled:hover {
   transform: none;
 }
+.container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 20px;
+  padding: 20px;
+}
+
+.card {
+  background: linear-gradient(135deg, #f0f8ff, #e6f7ff);
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 16px;
+  text-align: center;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  cursor: pointer;
+}
+
+.name {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 8px;
+}
+
+.link {
+  font-size: 0.9rem;
+  color: #0070f3;
+  text-decoration: none;
+}
+
+.link:hover {
+  text-decoration: underline;
+
+}

@@ -8,3 +8,14 @@ type Type = {
 export type PokemonType = {
   data: {id: number; height: number; weight: number; name: string; types: Type[]};
 };
+
+export type PokemonLists = {
+  data: {
+    results: ListResultType[];
+  };
+};
+
+type ListResultType = {
+  name: string;
+  url: string;
+};
