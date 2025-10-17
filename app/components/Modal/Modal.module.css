@@ -1,0 +1,29 @@
+.modalWrapper {
+  position: relative;
+  height: 40vh;
+}
+
+.modalContainer {
+  width: 60%;
+  height: fit-content;
+  background-color: #fff;
+  padding: 10px 30px;
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  margin: auto;
+  text-align: center;
+  border-radius: 8px;
+  border: 1px solid #000;
+}
+
+.title {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.message {
+  font-size: 16px;
+}

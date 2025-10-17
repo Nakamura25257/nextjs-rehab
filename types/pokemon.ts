@@ -4,11 +4,6 @@ type Type = {
   };
 };
 
-// 実際に使用する部分のみ型定義
-export type PokemonType = {
-  data: {id: number; height: number; weight: number; name: string; types: Type[]};
-};
-
 export type PokemonLists = {
   data: {
     results: ListResultType[];
@@ -18,4 +13,15 @@ export type PokemonLists = {
 type ListResultType = {
   name: string;
   url: string;
+};
+
+/**
+ * ポケモンAPI 検索結果オブジェクト型
+ */
+export type SearchResult = {
+  id: number;
+  height: number;
+  weight: number;
+  name: string;
+  types: Type[];
 };
