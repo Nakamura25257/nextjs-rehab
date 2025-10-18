@@ -4,31 +4,31 @@ import {ChangeEvent, useState} from 'react';
 import styles from './style.module.css';
 import {PokemonLists, SearchResult} from '@/types/pokemon';
 import {Modal} from '@/app/components/Modal/Modal';
+import {useLoading} from '@/app/hooks/useLoading';
 
 const POKEMON_URL: string | undefined = process.env.NEXT_PUBLIC_POKE_API_URL;
 
 export default function IndexPage(pokemonData: PokemonLists) {
+  const {isLoading, setIsLoading} = useLoading();
   const [isDisabledBtn, setIsDisabledBtn] = useState<boolean>(true);
   const [searchPokemon, setsearchPokemon] = useState<string>('');
-  const [searchResult, setSearchResult] = useState<SearchResult>();
+  const [searchResult, setSearchResult] = useState<SearchResult>(); // 検索結果用Hooks
   const [errorMessage, setErrorMessage] = useState<string>('');
 
   const handleChangeInput = async (e: ChangeEvent<HTMLInputElement>): Promise<void> => {
     const value: string = e.target.value;
     setsearchPokemon(POKEMON_URL + value.toLowerCase());
-    value.length > 0 ? setIsDisabledBtn(false) : setIsDisabledBtn(true);
-
-    // await handleSearch().catch((error: unknown) => console.error(error));
+    value ? setIsDisabledBtn(false) : setIsDisabledBtn(true);
   };
 
   const handleSearch = async () => {
-    console.log('handleSearch');
-    // pokemonURLでfetch
+    setIsLoading(true);
     try {
       const res = await fetch(searchPokemon);
       const data: SearchResult = await res.json();
-      console.log('data', data);
+      setIsLoading(false);
       setSearchResult(data);
+      setErrorMessage('');
     } catch (error: unknown) {
       if (error instanceof Error) {
         console.error('Failed to fetch:', error.message);
@@ -42,7 +42,13 @@ export default function IndexPage(pokemonData: PokemonLists) {
   return (
     <>
       <div className={styles.searchWrapper}>
-        <input type="text" className={styles.searchInput} id="id-search-input" onChange={handleChangeInput} />
+        <input
+          type="text"
+          className={styles.searchInput}
+          id="id-search-input"
+          onChange={handleChangeInput}
+          placeholder="please input the Pokemon name"
+        />
         <button
           type="button"
           className={styles.searchBtn}
@@ -54,10 +60,14 @@ export default function IndexPage(pokemonData: PokemonLists) {
         </button>
       </div>
 
-      {errorMessage ?? <Modal isError={true} message={errorMessage} />}
-
-      {searchResult ? (
-        <div className={styles.resultWrapper}>{searchResult.name}</div>
+      {errorMessage ? (
+        <Modal isError={true} message={errorMessage} />
+      ) : isLoading ? (
+        <Modal isError={false} message="Loading" />
+      ) : searchResult ? (
+        <div className={styles.resultWrapper}>
+          <p>{searchResult.name}</p>
+        </div>
       ) : (
         <>
           <div className={styles.container}>

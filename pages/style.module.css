@@ -93,5 +93,37 @@
 }
 
 .resultWrapper {
-  
+  display: flex;
+  flex-direction: column; /* 文字を縦に並べる */
+  gap: 8px;               /* 行間 */
+  padding: 16px;           /* 内側の余白 */
+  border-radius: 12px;     /* 角丸 */
+  background:linear-gradient(135deg, #f0f8ff, #e6f7ff); 
+  border: 1px solid #e2e8f0; /* 薄い枠線 */
+  box-shadow: 0 4px 8px rgba(0,0,0,0.05); /* 軽い影 */
+  max-width: 400px;         /* 幅制限 */
+  margin: 16px auto;        /* 中央寄せ */
+  cursor: pointer;
 }
+
+.resultWrapper p {
+  margin: 0;
+  font-size: 1rem;
+  color: #0f172a;
+  font-weight: 500;
+  text-align: center;
+}
+
+/* 名前を目立たせる */
+.resultWrapper p:first-child {
+  font-size: 1.25rem;
+  font-weight: 700;
+  text-transform: capitalize; /* Pikachu などの先頭大文字 */
+}
+
+/* Height と Weight を少し淡くする */
+.resultWrapper p:nth-child(n+2) {
+  font-size: 0.95rem;
+  color: #475569;
+}
+
