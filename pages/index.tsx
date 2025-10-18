@@ -1,10 +1,11 @@
 'use client';
 
-import {ChangeEvent, useState} from 'react';
+import {ChangeEvent, useEffect, useState} from 'react';
 import styles from './style.module.css';
 import {PokemonLists, SearchResult} from '@/types/pokemon';
 import {Modal} from '@/app/components/Modal/Modal';
 import {useLoading} from '@/app/hooks/useLoading';
+import Link from 'next/link';
 
 const POKEMON_URL: string | undefined = process.env.NEXT_PUBLIC_POKE_API_URL;
 
@@ -14,6 +15,11 @@ export default function IndexPage(pokemonData: PokemonLists) {
   const [searchPokemon, setsearchPokemon] = useState<string>('');
   const [searchResult, setSearchResult] = useState<SearchResult>(); // 検索結果用Hooks
   const [errorMessage, setErrorMessage] = useState<string>('');
+
+  // 初期化処理
+  useEffect(() => {
+    setErrorMessage('');
+  }, []);
 
   const handleChangeInput = async (e: ChangeEvent<HTMLInputElement>): Promise<void> => {
     const value: string = e.target.value;
@@ -25,10 +31,12 @@ export default function IndexPage(pokemonData: PokemonLists) {
     setIsLoading(true);
     try {
       const res = await fetch(searchPokemon);
-      const data: SearchResult = await res.json();
-      setIsLoading(false);
-      setSearchResult(data);
-      setErrorMessage('');
+      if (res.ok) {
+        const data: SearchResult = await res.json();
+        setIsLoading(false);
+        setSearchResult(data);
+        setErrorMessage('');
+      }
     } catch (error: unknown) {
       if (error instanceof Error) {
         console.error('Failed to fetch:', error.message);
@@ -37,6 +45,12 @@ export default function IndexPage(pokemonData: PokemonLists) {
         console.error('Unexpected error', error);
       }
     }
+  };
+
+  const getPokemonIdFromUrl = (url: string): string => {
+    const params: string[] = url.split('/');
+    const id: string = params[params.length - 2];
+    return id;
   };
 
   return (
@@ -63,22 +77,26 @@ export default function IndexPage(pokemonData: PokemonLists) {
       {errorMessage ? (
         <Modal isError={true} message={errorMessage} />
       ) : isLoading ? (
-        <Modal isError={false} message="Loading" />
+        <Modal isError={false} message="Loading..." />
       ) : searchResult ? (
-        <div className={styles.resultWrapper}>
-          <p>{searchResult.name}</p>
+        <div className={styles.resultWrapper} id={searchResult.id}>
+          <Link href={`/pokemon/${searchResult.id}`}>
+            <p>{searchResult.name}</p>
+          </Link>
         </div>
       ) : (
         <>
           <div className={styles.container}>
-            {pokemonData.data.results.map(pokemon => (
-              <div key={pokemon.name} className={styles.card}>
-                <p className={styles.name}>{pokemon.name}</p>
-                <a href={pokemon.url} target="_blank" rel="noopener noreferrer" className={styles.link}>
-                  詳細を見る
-                </a>
-              </div>
-            ))}
+            {pokemonData.data.results.map(pokemon => {
+              const id: string = getPokemonIdFromUrl(pokemon.url);
+              return (
+                <div key={id} className={styles.card}>
+                  <Link href={`/pokemon/${id}`}>
+                    <p className={styles.name}>{pokemon.name}</p>
+                  </Link>
+                </div>
+              );
+            })}
           </div>
         </>
       )}

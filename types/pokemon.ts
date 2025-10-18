@@ -19,7 +19,7 @@ type ListResultType = {
  * ポケモンAPI 検索結果オブジェクト型
  */
 export type SearchResult = {
-  id: number;
+  id: string;
   height: number;
   weight: number;
   name: string;
